@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BBVA — Financiamiento Ganadero</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading" id="loading">
+  <svg height="36" viewBox="0 0 600 179.8"><path fill="#FFFFFF" d="M432.2,24.4l-51.6,98.2c-1.1,2.1-4.3,2.1-5.4,0l-51.6-98.2c-0.5-1-1.5-1.6-2.6-1.6h-25c-1.7,0-2.8,1.8-2,3.3 l81.3,152.2c1.1,2.1,4.1,2.1,5.3,0l81.3-152.2c0.8-1.5-0.3-3.3-2-3.3h-25C433.7,22.8,432.7,23.4,432.2,24.4z"/><path fill="#FFFFFF" d="M461.5,155.5l51.6-98.2c1.1-2.1,4.3-2.1,5.4,0l51.6,98.2c0.5,1,1.5,1.6,2.6,1.6h25c1.7,0,2.8-1.8,2-3.3 L518.4,1.6c-1.1-2.1-4.1-2.1-5.3,0l-81.3,152.2c-0.8,1.5,0.3,3.3,2,3.3h25C459.9,157,461,156.4,461.5,155.5z"/><path fill="#FFFFFF" d="M108.8,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1H3c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3 h74c37,0,56.5-15.9,56.5-47.1C133.5,102.3,108.8,95.2,108.8,95.2z M29,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6 c0,13.4-8.6,20.6-25.5,20.6H29c-1.6,0-3-1.3-3-3V48.5C26,46.8,27.3,45.5,29,45.5z M75.5,157l-46.5,0c-1.7,0-3-1.3-3-3 l0-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C107.5,150.8,97.9,157,75.5,157z"/><path fill="#FFFFFF" d="M267.5,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1h-77.4c-1.7,0-3,1.3-3,3v151.1 c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C292.2,102.3,267.5,95.2,267.5,95.2z M187.7,45.5h45.9 c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6h-45.9c-1.7,0-3-1.3-3-3V48.5C184.7,46.8,186,45.5,187.7,45.5z M234.1,157l-46.5,0c-1.6,0-3-1.3-3-3v-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C266.2,150.8,256.5,157,234.1,157z"/></svg>
+  <div class="loading-spinner" style="margin-top:24px;"></div>
+  <div class="loading-text">Cargando Financiamiento Ganadero...</div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">
+      <svg height="26" viewBox="0 0 600 179.8"><path fill="#FFFFFF" d="M432.2,24.4l-51.6,98.2c-1.1,2.1-4.3,2.1-5.4,0l-51.6-98.2c-0.5-1-1.5-1.6-2.6-1.6h-25c-1.7,0-2.8,1.8-2,3.3 l81.3,152.2c1.1,2.1,4.1,2.1,5.3,0l81.3-152.2c0.8-1.5-0.3-3.3-2-3.3h-25C433.7,22.8,432.7,23.4,432.2,24.4L432.2,24.4z"/><path fill="#FFFFFF" d="M461.5,155.5l51.6-98.2c1.1-2.1,4.3-2.1,5.4,0l51.6,98.2c0.5,1,1.5,1.6,2.6,1.6h25c1.7,0,2.8-1.8,2-3.3 L518.4,1.6c-1.1-2.1-4.1-2.1-5.3,0l-81.3,152.2c-0.8,1.5,0.3,3.3,2,3.3h25C459.9,157,461,156.4,461.5,155.5L461.5,155.5z"/><path fill="#FFFFFF" d="M108.8,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1H3c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3 h74c37,0,56.5-15.9,56.5-47.1C133.5,102.3,108.8,95.2,108.8,95.2L108.8,95.2z M29,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6 c0,13.4-8.6,20.6-25.5,20.6H29c-1.6,0-3-1.3-3-3V48.5C26,46.8,27.3,45.5,29,45.5L29,45.5z M75.5,157l-46.5,0c-1.7,0-3-1.3-3-3 l0-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C107.5,150.8,97.9,157,75.5,157L75.5,157z"/><path fill="#FFFFFF" d="M267.5,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1h-77.4c-1.7,0-3,1.3-3,3v151.1 c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C292.2,102.3,267.5,95.2,267.5,95.2L267.5,95.2z M187.7,45.5h45.9 c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6h-45.9c-1.7,0-3-1.3-3-3V48.5C184.7,46.8,186,45.5,187.7,45.5L187.7,45.5z M234.1,157l-46.5,0c-1.6,0-3-1.3-3-3v-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C266.2,150.8,256.5,157,234.1,157 L234.1,157z"/></svg>
+    </div>
+    <div class="header-sep"></div>
+    <div>
+      <div class="header-title">Financiamiento Ganadero</div>
+      <div class="header-subtitle">Inteligencia ganadera para decisiones crediticias</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="header-demo">DEMO</span>
+    <img src="data:image/png;base64,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" alt="Bold" style="height:18px;">
+  </div>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-num">1</span>Oportunidad de Mercado</button>
+  <button class="tab-btn" onclick="switchTab(1)"><span class="tab-num">2</span>Scoring Ganadero</button>
+  <button class="tab-btn" onclick="switchTab(2)"><span class="tab-num">3</span>Precalificación Crediticia</button>
+  <button class="tab-btn" onclick="switchTab(3)"><span class="tab-num">4</span>Monitoreo Quincenal</button>
+</div>
+
+<!-- ============================================================
+     TAB 1: OPORTUNIDAD DE MERCADO
+     ============================================================ -->
+<div class="tab-content active" id="tab-0">
+  <div class="section-title">Oportunidad de Mercado Ganadero</div>
+  <div class="section-sub">Dimensionamiento del negocio ganadero para BBVA Argentina — Fuente: SENASA, dic. 2024</div>
+
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-label">Rodeo Nacional</div>
+      <div class="kpi-value">51.6M</div>
+      <div class="kpi-sub">cabezas al 31/12/2024</div>
+      <div class="kpi-change down">▼ 2.2% vs 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Pastoreo a Cielo Abierto</div>
+      <div class="kpi-value">~46.5M</div>
+      <div class="kpi-sub">~90% del rodeo nacional</div>
+      <div class="kpi-change" style="color:var(--aq);">Sin scoring crediticio</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Establecimientos</div>
+      <div class="kpi-value">131K</div>
+      <div class="kpi-sub">unidades productivas</div>
+      <div class="kpi-change">~310 cab/establecimiento</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tasa de Destete</div>
+      <div class="kpi-value">65.2%</div>
+      <div class="kpi-sub">2° mejor histórico (serie 2007-2024)</div>
+      <div class="kpi-change up">▲ vs promedio 61.9%</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Densidad Ganadera por Provincia</div>
+        <div class="card-badge" style="background:var(--aq-l);color:var(--aq);">SENASA 2024</div>
+      </div>
+      <div id="map-oportunidad" class="map-container"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Stock por Provincia (Top 10)</div>
+      </div>
+      <table class="prov-table">
+        <thead><tr><th>Provincia</th><th>Cabezas (M)</th><th>Participación</th><th></th></tr></thead>
+        <tbody id="prov-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Gancho comercial -->
+  <div class="card" style="background:linear-gradient(135deg,var(--nv-d),var(--nv));color:white;border:none;">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="font-size:48px;">🐄</div>
+      <div style="flex:1;">
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.3px;">46.5M de cabezas sin scoring crediticio automatizado</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;">El 90% del rodeo nacional opera en pastoreo a cielo abierto, sin evaluación de riesgo basada en sensorización. Ningún banco en Argentina ofrece hoy un scoring ganadero por establecimiento. <strong style="color:var(--bl);">BBVA puede ser el primero.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mención tambo y feedlot -->
+  <div class="mention-grid">
+    <div class="mention-box">
+      <div class="mention-box-title">🥛 Tambo <span class="mention-box-pct">&lt;5% del rodeo</span></div>
+      <div class="mention-box-text">Uso intensivo de tecnología (RFID, robots de ordeño, software de gestión). Los certificadores como SiloReal ya verifican activos vía caravanas electrónicas. <strong>Bold complementa al certificador:</strong> SiloReal certifica que el activo existe; BoldOS dice cuánto vale, cuál es su riesgo y cómo optimizarlo.</div>
+    </div>
+    <div class="mention-box">
+      <div class="mention-box-title">🌾 Feedlot <span class="mention-box-pct">&lt;5% del rodeo</span></div>
+      <div class="mention-box-text">Engorde en corral con control estricto de conversión alimenticia. Márgenes estrechos dependientes del precio del maíz y del ternero de invernada. Caso similar al tambo: la verificación del activo ya está resuelta, lo que falta es la inteligencia crediticia sobre el riesgo operativo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TAB 2: SCORING GANADERO
+     ============================================================ -->
+<div class="tab-content" id="tab-1">
+  <div class="section-title">Scoring Ganadero BoldOS</div>
+  <div class="section-sub">Seleccioná un establecimiento para ver el análisis de riesgo basado en señales multitemporales</div>
+
+  <div class="grid-sidebar">
+    <!-- Left: list -->
+    <div>
+      <div style="margin-bottom:12px;font-size:11px;font-weight:600;color:var(--g5);text-transform:uppercase;letter-spacing:.5px;">Establecimientos analizados</div>
+      <div class="est-list" id="est-list"></div>
+    </div>
+    <!-- Right: detail -->
+    <div id="scoring-detail">
+      <div class="card" style="text-align:center;padding:60px 40px;color:var(--g4);">
+        <div style="font-size:48px;margin-bottom:12px;">📊</div>
+        <div style="font-size:14px;font-weight:600;">Seleccioná un establecimiento</div>
+        <div style="font-size:12px;margin-top:4px;">para ver su scoring ganadero BoldOS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TAB 3: PRECALIFICACIÓN CREDITICIA
+     ============================================================ -->
+<div class="tab-content" id="tab-2">
+  <div class="section-title">Precalificación Crediticia Agronómica</div>
+  <div class="section-sub">Del scoring BoldOS a la recomendación de crédito para el oficial de BBVA</div>
+
+  <div id="credit-content">
+    <div class="card" style="text-align:center;padding:60px 40px;color:var(--g4);">
+      <div style="font-size:48px;margin-bottom:12px;">💳</div>
+      <div style="font-size:14px;font-weight:600;">Seleccioná un establecimiento en el Tab 2</div>
+      <div style="font-size:12px;margin-top:4px;">para ver la precalificación crediticia</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TAB 4: MONITOREO QUINCENAL
+     ============================================================ -->
+<div class="tab-content" id="tab-3">
+  <div class="section-title">Monitoreo Quincenal Post-Desembolso</div>
+  <div class="section-sub">Seguimiento automático del riesgo ganadero cada 15 días mediante sensorización de pasturas</div>
+
+  <div id="monitoring-content">
+    <div class="card" style="text-align:center;padding:60px 40px;color:var(--g4);">
+      <div style="font-size:48px;margin-bottom:12px;">📡</div>
+      <div style="font-size:14px;font-weight:600;">Seleccioná un establecimiento en el Tab 2</div>
+      <div style="font-size:12px;margin-top:4px;">para ver el monitoreo quincenal</div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts: data first, then app logic -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
