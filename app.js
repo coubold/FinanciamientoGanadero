@@ -25,7 +25,7 @@ function initMap1() {
   }).addTo(map1);
   
   ESTABLECIMIENTOS.forEach(e => {
-    const color = e.score >= 70 ? '#49A942' : e.score >= 50 ? '#F5A623' : '#E63946';
+    const color = e.score >= 70 ? '#22d39a' : e.score >= 50 ? '#ffb547' : '#ff5577';
     const circle = L.circleMarker([e.lat, e.lng], {
       radius: Math.sqrt(e.cabezas) / 8,
       fillColor: color, fillOpacity: 0.7,
@@ -37,8 +37,8 @@ function initMap1() {
   PROVINCIAS.forEach(p => {
     const radius = Math.sqrt(p.cabezas) / 120;
     L.circleMarker([p.lat, p.lng], {
-      radius: radius, fillColor: '#1973B8', fillOpacity: 0.15,
-      color: '#1973B8', weight: 1, opacity: 0.3
+      radius: radius, fillColor: '#06ffe1', fillOpacity: 0.15,
+      color: '#06ffe1', weight: 1, opacity: 0.3
     }).addTo(map1);
   });
 }
